@@ -35,8 +35,8 @@ namespace MinhaDemoMVC.Controllers
                 Valor = 20000
             };
 
-            return RedirectToAction("Privacy", filme);
-           // return View();
+            //return RedirectToAction("Privacy", filme);
+            return View();
         }
 
         [Route("privacidade")]
@@ -54,7 +54,7 @@ namespace MinhaDemoMVC.Controllers
                 Console.WriteLine(error.ErrorMessage);
 
             }
-            // return View();
+            return View();
             //return Json(new
             //{
             //    Nome = "Linha de Codigo",
@@ -65,7 +65,7 @@ namespace MinhaDemoMVC.Controllers
             //var fileName = "joao.md";
             //return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
 
-            return Content("<h1>Joao<h1>");
+            //return Content("<h1>Joao<h1>");
 
         }
 
