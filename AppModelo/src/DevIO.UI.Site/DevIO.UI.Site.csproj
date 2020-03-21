@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\jquery-validate\**" />
+    <Compile Remove="wwwroot\libs\**" />
+    <Content Remove="wwwroot\jquery-validate\**" />
+    <Content Remove="wwwroot\libs\**" />
+    <EmbeddedResource Remove="wwwroot\jquery-validate\**" />
+    <EmbeddedResource Remove="wwwroot\libs\**" />
+    <None Remove="wwwroot\jquery-validate\**" />
+    <None Remove="wwwroot\libs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.435" />
+  </ItemGroup>
+
+</Project>
