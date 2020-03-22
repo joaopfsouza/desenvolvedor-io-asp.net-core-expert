@@ -1,1 +1,6 @@
-﻿<h1>Hello World!!!</h1>
+﻿@using DevIO.UI.Site.Data
+@inject IPedidoRepository PedidoRepository
+
+<h1>Hello World!!!</h1>
+
+@PedidoRepository.ObterPedido().Id

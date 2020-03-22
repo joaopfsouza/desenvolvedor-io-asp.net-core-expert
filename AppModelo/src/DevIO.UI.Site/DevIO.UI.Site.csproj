@@ -5,22 +5,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\**" />
     <Compile Remove="wwwroot\jquery-validate\**" />
     <Compile Remove="wwwroot\libs\**" />
+    <Content Remove="Areas\**" />
     <Content Remove="wwwroot\jquery-validate\**" />
     <Content Remove="wwwroot\libs\**" />
+    <EmbeddedResource Remove="Areas\**" />
     <EmbeddedResource Remove="wwwroot\jquery-validate\**" />
     <EmbeddedResource Remove="wwwroot\libs\**" />
+    <None Remove="Areas\**" />
     <None Remove="wwwroot\jquery-validate\**" />
     <None Remove="wwwroot\libs\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Modulos\Vendas\Data\" />
+    <Folder Include="Modulos\Vendas\Models\" />
+    <Folder Include="Modulos\Produtos\Data\" />
+    <Folder Include="Modulos\Produtos\Models\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.435" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
 </Project>
