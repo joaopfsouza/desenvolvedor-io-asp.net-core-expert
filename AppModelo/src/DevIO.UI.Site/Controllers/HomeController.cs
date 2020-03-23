@@ -12,21 +12,21 @@ namespace DevIO.UI.Site.Controllers
         {
             _pedidoRepository = pedidoRepository;
         }
-        
-        //public IActionResult Index()
-        //{
 
-        //    var pedido = _pedidoRepository.ObterPedido();
-
-        //    return View();
-        //}
-
-        public IActionResult Index([FromServices] IPedidoRepository _pedidoRepository)
+        public IActionResult Index()
         {
 
             var pedido = _pedidoRepository.ObterPedido();
 
             return View();
         }
+
+        //public IActionResult Index([FromServices] IPedidoRepository _pedidoRepository)
+        //{
+
+        //    var pedido = _pedidoRepository.ObterPedido();
+
+        //    return View();
+        //}
     }
 }
