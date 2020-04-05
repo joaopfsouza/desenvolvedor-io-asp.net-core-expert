@@ -8,13 +8,22 @@
     }
   },
   "profiles": {
-    "IIS Express": {
+    "DEV_IIS": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+
+    "PROD_IIS": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    },
+
     "MinhaDemoMVC": {
       "commandName": "Project",
       "launchBrowser": true,

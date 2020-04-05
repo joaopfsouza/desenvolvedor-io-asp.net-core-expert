@@ -20,9 +20,9 @@ namespace MinhaDemoMVC.Controllers
             _logger = logger;
         }
 
-        [Route("")]
-        [Route("pagina-inicial")]
-        [Route("pagina-inicial/{id:int}/{categorias:guid?}")]
+        //[Route("")]
+        //[Route("pagina-inicial")]
+        //[Route("pagina-inicial/{id:int}/{categorias:guid?}")]
        // public IActionResult Index(int id, Guid categorias)
         public IActionResult Index()
         {
@@ -34,7 +34,7 @@ namespace MinhaDemoMVC.Controllers
                 Avaliacao = 10,
                 Valor = 20000
             };
-
+            
             //return RedirectToAction("Privacy", filme);
             return View();
         }
@@ -54,6 +54,7 @@ namespace MinhaDemoMVC.Controllers
                 Console.WriteLine(error.ErrorMessage);
 
             }
+            throw new Exception("Erro");
             return View();
             //return Json(new
             //{
@@ -69,11 +70,36 @@ namespace MinhaDemoMVC.Controllers
 
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        [Route("erro-encontrado")]
-        public IActionResult Error()
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //[Route("erro-encontrado")]
+        [Route("error/{id:length(3,3)}")]
+        public IActionResult Error(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            var modelError = new ErrorViewModel();
+
+            if(id == 500)
+            {
+                modelError.Mensagem = "Ocorreu um erro! Erro 5xx";
+                modelError.Titulo = "Ops, página não encontrada";
+                modelError.ErroCode = id;
+            }else if (id == 404)
+            {
+                modelError.Mensagem = "Ocorreu um erro! Erro 404";
+                modelError.Titulo = "Ops, página não encontrada";
+                modelError.ErroCode = id;
+            }
+            else if (id == 403)
+            {
+                modelError.Mensagem = "Ocorreu um erro! Erro 403";
+                modelError.Titulo = "Ops, página não encontrada";
+                modelError.ErroCode = id;
+            }
+            else
+            {
+                return StatusCode(404);
+            }
+            return View("Error",modelError);
         }
     }
 }

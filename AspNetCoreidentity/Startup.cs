@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AspNetCoreidentity.Areas.Identity.Data;
+using AspNetCoreidentity.Config;
 using AspNetCoreidentity.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,41 +14,39 @@ namespace AspNetCoreidentity
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+    
+        public Startup(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostEnvironment)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(hostEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.config", true, true)
+                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.config",true,true)
+                .AddEnvironmentVariables();
+
+
+            if (hostEnvironment.IsProduction())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+
+            Configuration = builder.Build();
+        }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
 
-            services.AddDbContext<AspNetCoreidentityContext>(options =>
-                   options.UseSqlServer(
-                       Configuration.GetConnectionString("AspNetCoreidentityContextConnection")));
+            #region Config
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddDefaultUI()
-                .AddEntityFrameworkStores<AspNetCoreidentityContext>();
+            services.AddIdentiyConfig(Configuration);
+            services.AddAutorizathionConfig();
+            services.ResolveDependencies();
+            #endregion
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("PodeExcluir", policy => policy.RequireClaim("PodeExcluir"));
-
-                options.AddPolicy("PodeLer", policy => policy.Requirements.Add(new PermissaoNecessaria("PodeLer")));
-                options.AddPolicy("PodeEscrever", policy => policy.Requirements.Add(new PermissaoNecessaria("PodeEscrever")));
-                options.AddPolicy("PodeGravar", policy => policy.Requirements.Add(new PermissaoNecessaria("PodeGravar")));
-            });
-
-            services.AddSingleton<IAuthorizationHandler, PermissaoNecessariaHandler>();
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -62,9 +56,9 @@ namespace AspNetCoreidentity
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
