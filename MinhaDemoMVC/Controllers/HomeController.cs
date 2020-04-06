@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using KissLog;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using MinhaDemoMVC.Models;
 
 namespace MinhaDemoMVC.Controllers
@@ -13,9 +13,9 @@ namespace MinhaDemoMVC.Controllers
     [Route("gestao-clientes")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger  _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger logger)
         {
             _logger = logger;
         }
@@ -34,6 +34,8 @@ namespace MinhaDemoMVC.Controllers
                 Avaliacao = 10,
                 Valor = 20000
             };
+
+            _logger.Trace("Usuário acessou a Home");   
             
             //return RedirectToAction("Privacy", filme);
             return View();
@@ -54,7 +56,18 @@ namespace MinhaDemoMVC.Controllers
                 Console.WriteLine(error.ErrorMessage);
 
             }
-            throw new Exception("Erro");
+
+            try
+            {
+                throw new Exception("Algo ocorreu!!!");    
+            }
+            catch (Exception e)
+            {
+
+                _logger.Error(e);
+                throw;
+            }
+           
             return View();
             //return Json(new
             //{
