@@ -8,7 +8,7 @@ namespace AppMVCBasica.Models
 {
     public class Produto : Entity
     {
-        public string Name { get; set; }
+        public string Nome { get; set; }
 
 
         public string Descricao { get; set; }
