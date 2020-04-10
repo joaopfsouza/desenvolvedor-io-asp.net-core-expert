@@ -16,6 +16,7 @@ using KissLog.Apis.v1.Listeners;
 using KissLog.AspNetCore;
 using KissLog.Listeners;
 using KissLog;
+using MinhaDemoMVC.Extensions;
 
 namespace MinhaDemoMVC
 {
@@ -36,7 +37,9 @@ namespace MinhaDemoMVC
             services.AddScoped((context) =>Logger.Factory.Get());
             
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options=>options.Filters.Add(typeof( AuditoriaFilter)));
+
+            services.AddScoped<AuditoriaFilter>();
 
             services.AddDbContext<MinhaDemoMVCContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MinhaDemoMVCContext")));
