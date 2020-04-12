@@ -11,6 +11,7 @@ using DevIO.App.Data;
 using DevIO.Data.Context;
 using DevIO.Business.Interfaces;
 using DevIO.Data.Repository;
+using AutoMapper;
 
 namespace DevIO.App
 {
@@ -47,6 +48,11 @@ namespace DevIO.App
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+
+            services.AddAutoMapper(typeof(Startup));
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
