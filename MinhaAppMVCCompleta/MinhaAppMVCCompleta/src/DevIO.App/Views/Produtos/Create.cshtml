@@ -10,7 +10,7 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <form enctype="multipart/form-data" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -36,7 +36,7 @@
 
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="ImageUpload" asp-for="ImageUpload">
-                    <label data-browse="Procurar" style="width: 400px" class="custom-file-label" for="ImageUpload"></label>
+                    <label data-browse="Procurar" style="width: 450px" class="custom-file-label" for="ImageUpload"></label>
                     <label style="display:none" id="img_nome"></label>
                 </div>
 
@@ -67,13 +67,13 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
-        $("#ImageUpload").change(function () {
-            $("#img_nome").text(this.files[0].name);
-            $("#img_nome")[0].style.display = 'block';
-        });
+<script>
+    $("#ImageUpload").change(function () {
+        $("#img_nome").text(this.files[0].name);
+        $("#img_nome")[0].style.display = 'block';
+    });
 
-        $("#ImageUpload").attr("data-val", "true");
-        $("#ImageUpload").attr("data-val-required", "Preencha o campo Imagem");
-    </script>
+    $("#ImageUpload").attr("data-val", "true");
+    $("#ImageUpload").attr("data-val-required", "Preencha o campo Imagem");
+</script>
 }
