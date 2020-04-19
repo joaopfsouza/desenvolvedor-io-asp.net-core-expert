@@ -26,7 +26,7 @@ namespace DevIO.App.ViewModels
 
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        [StringLength(8, ErrorMessage = "O campo {0} precisa ter {1}  ", MinimumLength = 8)]
+        [StringLength(100, ErrorMessage = "O campo {0} precisa ter entre {2} e {1}  ", MinimumLength = 8)]
 
         public string Bairro { get; set; }
 
