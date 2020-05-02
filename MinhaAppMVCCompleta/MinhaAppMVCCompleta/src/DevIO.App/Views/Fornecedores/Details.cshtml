@@ -5,7 +5,7 @@
     ViewData["Title"] = "Detalhes";
 }
 
-    <h1>Detalhes Fornecedor</h1>
+<h1>Detalhes Fornecedor</h1>
 
 <div>
     <h4>Informação só leitura</h4>
@@ -43,3 +43,24 @@
 </div>
 
 <partial name="_DetalhesEndereco" />
+
+<div id="myModal" class="modal fade in">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div id="myModalContent"></div>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            AjaxModal();
+        });
+    </script>
+
+}
