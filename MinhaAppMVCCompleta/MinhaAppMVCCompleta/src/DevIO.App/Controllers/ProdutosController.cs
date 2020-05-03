@@ -15,17 +15,23 @@ namespace DevIO.App.Controllers
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IFornecedorRepository _fornecedorRepository;
+        private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
 
 
 
-        public ProdutosController(IProdutoRepository produtoRepository, IFornecedorRepository fornecedorRepository, IMapper mapper)
+        public ProdutosController(IProdutoRepository produtoRepository,
+                                IFornecedorRepository fornecedorRepository,
+                                IProdutoService produtoService,
+                                IMapper mapper,
+                                INotificador notificador) : base(notificador)
         {
             _produtoRepository = produtoRepository;
             _fornecedorRepository = fornecedorRepository;
+            _produtoService = produtoService;
             _mapper = mapper;
         }
-        
+
         [Route("lista-de-produtos")]
         public async Task<IActionResult> Index()
         {
@@ -71,14 +77,16 @@ namespace DevIO.App.Controllers
 
             var imgPrefixo = Guid.NewGuid() + "_";
 
-            if(!await UploadArquivo(produtoViewModel.ImageUpload, imgPrefixo))
+            if (!await UploadArquivo(produtoViewModel.ImageUpload, imgPrefixo))
             {
                 return View(produtoViewModel);
             }
 
             produtoViewModel.Image = imgPrefixo + produtoViewModel.ImageUpload.FileName;
 
-            await _produtoRepository.Adicionar(_mapper.Map<Produto>(produtoViewModel));
+            await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
+
+            if (!OperacaoValida()) return View(produtoViewModel);
 
             return RedirectToAction("Index");
 
@@ -95,7 +103,7 @@ namespace DevIO.App.Controllers
             {
                 return NotFound();
             }
-           
+
             return View(produtoViewModel);
         }
 
@@ -105,7 +113,7 @@ namespace DevIO.App.Controllers
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel)
         {
             if (id != produtoViewModel.Id) return NotFound();
-            
+
 
             var produtoAtualizacao = await ObterProduto(id);
             produtoViewModel.Fornecedor = produtoAtualizacao.Fornecedor;
@@ -115,7 +123,7 @@ namespace DevIO.App.Controllers
             if (!ModelState.IsValid) return View(produtoViewModel);
 
 
-            if(produtoViewModel.ImageUpload != null)
+            if (produtoViewModel.ImageUpload != null)
             {
                 var imgPrefixo = Guid.NewGuid() + "_";
 
@@ -138,11 +146,14 @@ namespace DevIO.App.Controllers
 
 
 
-            await _produtoRepository.Atualizar(_mapper.Map<Produto>(produtoAtualizacao));
-            
+            await _produtoService.Atualizar(_mapper.Map<Produto>(produtoAtualizacao));
+
+            if (!OperacaoValida()) return View(produtoViewModel);
+
+
             return RedirectToAction(nameof(Index));
-            
-         
+
+
         }
 
         [Route("excluir-produto/{id:guid}")]
@@ -151,7 +162,7 @@ namespace DevIO.App.Controllers
         {
 
             var produtoViewModel = await ObterProduto(id);
-                
+
             if (produtoViewModel == null)
             {
                 return NotFound();
@@ -172,7 +183,12 @@ namespace DevIO.App.Controllers
                 return NotFound();
             }
 
-           await  _produtoRepository.Remover(id);
+            await _produtoService.Remover(id);
+
+            if (!OperacaoValida()) return View(produtoViewModel);
+
+            TempData["Sucesso"] = "Produto excluído com sucesso";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -202,7 +218,7 @@ namespace DevIO.App.Controllers
                 return false;
             }
 
-            using (var stream = new FileStream(path,FileMode.Create))
+            using (var stream = new FileStream(path, FileMode.Create))
             {
                 await arquivo.CopyToAsync(stream);
             }
